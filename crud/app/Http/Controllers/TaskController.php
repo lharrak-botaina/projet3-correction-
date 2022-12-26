@@ -12,9 +12,13 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request )
     {
-        $tasks =Task::paginate(2);
+        
+        $request->merge(['page' => 1]);
+
+        $r=$request->all();
+        $tasks =Task::paginate(3);
         // dd($tasks);
         return view('tasks.index')->with('tasks',$tasks);
     }

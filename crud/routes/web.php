@@ -19,6 +19,6 @@ Route::get('/', function () {
 });
 Route::resource('task', TaskController::class);
 
-Route::get('/convert-to-json', function () {
-    return App\Task::paginate(5);
-});
+// Route::get('/convert-to-json', function () {
+//     return App\Task::paginate(5);
+// });
