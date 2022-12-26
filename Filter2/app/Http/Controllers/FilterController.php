@@ -20,18 +20,8 @@ class FilterController extends Controller
         return view('myfilter.filter',['mybridf'=>$brif,'mytache'=>$tache]);
     }
     public function filterbif(Request $request){
-        $output="";
-        $tache=Tache::where('idbrif','Like','%'.$request->filter.'%')->get();
-
-        foreach($tache as $tach)
-        {
-            $output.=
-            '<tr>
-            <td> '.$tach->nomtache.' </td>
-            <td> '.$tach->dateD.' </td>
-            </tr>';
-        }
-        return response($output);
+            $tache=Tache::where('idbrif','Like','%'.$request->filter.'%')->get();
+            return response(['tache11'=>$tache]);
     }
     /**
      * Show the form for creating a new resource.

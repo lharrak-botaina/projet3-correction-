@@ -18,7 +18,7 @@
     <th>
         
     </th>
-        <tbody class="tabel1">
+        <tbody class="tabel1" id="table1">
             @foreach ($mytache as $value)
         <tr>
             <td>{{$value->nomtache}}</td>
@@ -27,26 +27,33 @@
         </tr>
             @endforeach
         </tbody>
-        <tbody id='Content' class="tabel2"></tbody>
     </table>
     <script type="text/javascript">
         $('#filter').on('change',function(){
             $value=$(this).val();
-            if($value){
-                $('.tabel1').hide();
-                $('.tabel2').show();
-            }
-            else{
-                $('.tabel1').show();
-                $('.tabel2').hide();
-            }
             $.ajax({
                 type:'get',
-                url:'{{URL::to("Filterb")}}',
+                url:'{{route("Filterb")}}',
                 data:{'filter':$value},
                 success:function(data){
                     console.log(data);
-                    $('#Content').html(data);
+                    var mytache=data.tache11;
+                    var html='';
+                    if(mytache.length>0){
+                        for(let i=0;i<mytache.length;i++){
+                            html+='<tr>\
+                            <td>'+mytache[i]['nomtache']+'</td>\
+                            <td>'+mytache[i]['duree']+'</td>\
+                            <td>'+mytache[i]['idbrif']+'</td>\
+                            </tr>';
+                        }
+                    }
+                    else{
+                        html+='<tr>\
+                        <td>no tache</td>\
+                        </tr>';
+                    }
+                    $('#table1').html(html);
                 }
             });
         })
