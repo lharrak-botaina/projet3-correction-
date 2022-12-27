@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('briefs', function (Blueprint $table) {
             $table->id();
-            $table->string('nombrif');
-            $table->dateTime('dateheurelivraison');
-            $table->dateTime('dateheurerecupiration');
+            $table->string('nom_brief');
+            $table->dateTime('dateheure_livraison');
+            $table->dateTime('dateheure_recupiration');
             $table->timestamps();
         });
     }

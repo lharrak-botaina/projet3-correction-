@@ -8,10 +8,11 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> --}}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 <style>
@@ -153,16 +154,15 @@ table.table td i {
                 <div class="col-sm-12 d-flex justify-content-between p-3">
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('task.create') }}" class="btn btn-primary">+add task</a>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle ml-2" type="button" data-toggle="dropdown" aria-expanded="false">
-                              Briefs
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#">Brief 1</a></li>
-                              <li><a class="dropdown-item" href="#">Brief 2</a></li>
-                              <li><a class="dropdown-item" href="#">Brief 3</a></li>
-                            </ul>
-                          </div>
+                        
+                        
+                        <select class="btn btn-secondary dropdown-toggle ml-2" name="filter" id="filter">
+                            <option value="">select brief</option>
+                            @foreach ($brief as $value)
+                            <option value="{{$value->id}}">{{$value->nom_brief}}</option>
+                            @endforeach
+                        </select>
+                        
                     </div>
 
                     <div class="search-box">
@@ -182,7 +182,7 @@ table.table td i {
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="table1" id="table1">
                     @foreach ($tasks as $task )
                     <tr>
                         <td>{{ $task->name }}</td>
@@ -256,5 +256,35 @@ table.table td i {
 
     </div>
 </div>
+<script type="text/javascript">
+    $('#filter').on('change',function(){
+        $value=$(this).val();
+        $.ajax({
+            type:'get',
+            url:'{{route("filter_bief")}}',
+            data:{'filter':$value},
+            success:function(data){
+                console.log(data);
+                var task=data.dataTask;
+                var html='';
+                if(task.length>0){
+                    for(let i=0;i<task.length;i++){
+                        html+='<tr>\
+                        <td>'+task[i]['name']+'</td>\
+                        <td>'+task[i]['description']+'</td>\
+                        <td>'+task[i]['duree']+'</td>\
+                        </tr>';
+                    }
+                }
+                else{
+                    html+='<tr>\
+                    <td>no tache</td>\
+                    </tr>';
+                }
+                $('#table1').html(html);
+            }
+        });
+    })
+    </script>
 </body>
 </html>

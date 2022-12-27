@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Brief;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -17,10 +18,16 @@ class TaskController extends Controller
         /// change param value : 
         // $request->merge(['page' => 1]);
         // $r=$request->all();
+        $brief=Brief::all();
         $tasks =Task::paginate(3);
         // dd($tasks);
-        return view('tasks.index')->with('tasks',$tasks);
+        return view('tasks.index',['brief'=>$brief,'tasks'=>$tasks]);
+        
     }
+    public function filter_bief(Request $request){
+        $task=Task::where('id_brief','Like','%'.$request->filter.'%')->get();
+        return response(['dataTask'=>$task]);
+}
 
     /**
      * Show the form for creating a new resource.
