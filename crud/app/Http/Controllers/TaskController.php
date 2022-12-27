@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Brief;
+use App\Exports\TaskExport;
+use App\Imports\TaskImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -114,5 +117,20 @@ class TaskController extends Controller
         $delete = Task::findOrFail($id);
         $delete->delete();
         return redirect('/task');
+    }
+
+
+      // export data format excel
+
+      public function exportexcel(){
+        return Excel::download(new TaskExport,'datapage.xlsx');
+    }
+
+     // import data format excel
+     public function importexcel(Request $request){
+
+        Excel::import(new TaskImport, $request->file);
+        return redirect()->back();
+
     }
 }
