@@ -26,3 +26,4 @@ Route::resource('task', TaskController::class);
 Route::get('exportexcel',[ExportImportController::class,'exportexcel'])->name('exportexcel');
 Route::post('importexcel',[ExportImportController::class,'importexcel'])->name('importexcel');
 route::get('/filter_bief',[TaskController::class,'filter_bief'])->name('filter_bief');
+route::get('/searchtache',[TaskController::class,'search_tache'])->name('searchtache');

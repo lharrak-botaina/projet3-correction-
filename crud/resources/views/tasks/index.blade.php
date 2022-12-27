@@ -167,7 +167,7 @@ table.table td i {
 
                     <div class="search-box">
                         <i class="material-icons">&#xE8B6;</i>
-                        <input type="text" class="form-control" placeholder="Search&hellip;">
+                        <input type="text" class="form-control" id="search" placeholder="Search&hellip;">
                     </div>
 
                 </div>
@@ -285,6 +285,35 @@ table.table td i {
             }
         });
     })
+    $('#search').on('keyup',function(){
+        $value=$(this).val();
+        $.ajax({
+            type:'get',
+            url:'{{route("searchtache")}}',
+            data:{'searchtask':$value},
+            success:function(data){
+                console.log(data);
+                var task=data.search;
+                var html='';
+                if(task.length>0){
+                    for(let i=0;i<task.length;i++){
+                        html+='<tr>\
+                        <td>'+task[i]['name']+'</td>\
+                        <td>'+task[i]['description']+'</td>\
+                        <td>'+task[i]['duree']+'</td>\
+                        </tr>';
+                    }
+                }
+                else{
+                    html+='<tr>\
+                    <td>no tache</td>\
+                    </tr>';
+                }
+                $('#table1').html(html);
+            }
+        })
+    })
+    
     </script>
 </body>
 </html>

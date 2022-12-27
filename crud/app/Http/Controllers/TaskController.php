@@ -29,6 +29,12 @@ class TaskController extends Controller
         return response(['dataTask'=>$task]);
 }
 
+    public function search_tache(Request $request){
+        $searchtask=Task::where('name','Like','%'.$request->searchtask.'%')->get();
+        return response(['search'=>$searchtask]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
