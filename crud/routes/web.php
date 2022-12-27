@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ExportImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::resource('task', TaskController::class);
 // Route::get('/convert-to-json', function () {
 //     return App\Task::paginate(5);
 // });
+Route::get('exportexcel',[ExportImportController::class,'exportexcel'])->name('exportexcel');
+Route::post('importexcel',[ExportImportController::class,'importexcel'])->name('importexcel');

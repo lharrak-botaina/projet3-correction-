@@ -14,10 +14,9 @@ class TaskController extends Controller
      */
     public function index( Request $request )
     {
-        
-        $request->merge(['page' => 1]);
-
-        $r=$request->all();
+        /// change param value : 
+        // $request->merge(['page' => 1]);
+        // $r=$request->all();
         $tasks =Task::paginate(3);
         // dd($tasks);
         return view('tasks.index')->with('tasks',$tasks);
