@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("name")->nullable();
             $table->string("description")->nullable();
             $table->dateTime('duree')->nullable();
+            $table->bigInteger('id_brief')->unsigned()->nullable();
+            $table->foreign('id_brief')->references('id')->on('briefs')->onDelete('cascade');
             $table->timestamps();
         });
     }

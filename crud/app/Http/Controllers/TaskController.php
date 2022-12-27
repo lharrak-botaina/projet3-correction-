@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Brief;
+use App\Exports\TaskExport;
+use App\Imports\TaskImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -17,9 +21,21 @@ class TaskController extends Controller
         /// change param value : 
         // $request->merge(['page' => 1]);
         // $r=$request->all();
+        $brief=Brief::all();
         $tasks =Task::paginate(3);
         // dd($tasks);
-        return view('tasks.index')->with('tasks',$tasks);
+        return view('tasks.index',['brief'=>$brief,'tasks'=>$tasks]);
+        
+    }
+    public function filter_bief(Request $request){
+        $task=Task::where('id_brief','Like','%'.$request->filter.'%')->get();
+        return response(['dataTask'=>$task]);
+}
+
+    public function search_tache(Request $request){
+        $searchtask=Task::where('name','Like','%'.$request->searchtask.'%')->get();
+        return response(['search'=>$searchtask]);
+
     }
 
     /**
@@ -107,5 +123,20 @@ class TaskController extends Controller
         $delete = Task::findOrFail($id);
         $delete->delete();
         return redirect('/task');
+    }
+
+
+      // export data format excel
+
+      public function exportexcel(){
+        return Excel::download(new TaskExport,'datapage.xlsx');
+    }
+
+     // import data format excel
+     public function importexcel(Request $request){
+
+        Excel::import(new TaskImport, $request->file);
+        return redirect()->back();
+
     }
 }
